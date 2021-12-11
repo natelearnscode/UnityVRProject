@@ -6,63 +6,42 @@ public class HandMenu : MonoBehaviour
 {
     public Transform headsetTransform;
     public GameObject middleFingerMenu;
-
+    public OVRHand.Hand handType;
     public Texture2D wallTexture;
+
+    private OVRHand hand;
+    private OVRSkeleton skeleton;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.hand = this.GetComponentInChildren<OVRHand>();
+        this.skeleton = this.GetComponentInChildren<OVRSkeleton>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //up vector for right hand is the opposite of what we need so we need to reverse it first
+        Vector3 handUpDirection = this.handType == OVRHand.Hand.HandRight ? -this.transform.up : this.transform.up;
+
         //using dot product of the headset's forward and hand's up vector we can determine if palm of hand is facing the user
-        if(Vector3.Dot(headsetTransform.forward, -this.transform.up) < 0)
+        if (Vector3.Dot(headsetTransform.forward, handUpDirection) < 0)
         {
-            //Debug.Log("facing head");
-
             /* show finger menu options */
-
             middleFingerMenu.GetComponent<Canvas>().enabled = true;
-            OVRHand hand = this.GetComponentInChildren<OVRHand>();
-            OVRSkeleton skeleton = this.GetComponentInChildren<OVRSkeleton>();
-            // loop through skeleton of bones to find specific bone and display menu
-            foreach (OVRBone bone in skeleton.Bones)
-            {
-                //middle finger
-                if (bone.Id == OVRSkeleton.BoneId.Hand_Middle3)
-                {
-                    Vector3 newMenuPos = bone.Transform.position + (bone.Transform.right * 0.05f);
-                    middleFingerMenu.transform.position = newMenuPos;
-
-                    //rotate to face head
-                    Vector3 targetDirection = middleFingerMenu.transform.position - headsetTransform.position;
-                    middleFingerMenu.transform.rotation = Quaternion.LookRotation(targetDirection);
-                    break;
-                }
-            }
+            DisplayFingerMenus();
 
             /* check if any fingers are being pinched and open menu */
-
-            if(hand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
+            //  middle finger menu
+            if(this.hand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
             {
-                resetColor(this.wallTexture);
+                Debug.Log(this.hand.IsDominantHand);
+                if(this.handType == OVRHand.Hand.HandRight)
+                {
+                    resetColor(this.wallTexture);
+                }
             }
-            //else if (hand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
-            //{
-
-            //}
-            //else if (hand.GetFingerIsPinching(OVRHand.HandFinger.Ring))
-            //{
-
-            //}
-            //else if (hand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
-            //{
-
-            //}
-
         }
         else
         {
@@ -71,6 +50,28 @@ public class HandMenu : MonoBehaviour
         }
     }
 
+    private void DisplayFingerMenus()
+    {
+        // loop through skeleton of bones to find specific bone and display menu
+        foreach (OVRBone bone in this.skeleton.Bones)
+        {
+            //middle finger
+            if (bone.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
+            {
+                //offset is used to put menu at a small distance away from finger. The left and right hands have opposite right vectors, so we need to reverse the direction of the left hand to use the same math
+                Vector3 menuPosOffset = this.handType == OVRHand.Hand.HandLeft ? -bone.Transform.right * 0.05f : bone.Transform.right * 0.05f;
+                Vector3 newMenuPos = bone.Transform.position + menuPosOffset;
+                middleFingerMenu.transform.position = newMenuPos;
+
+                //rotate menu to face head
+                Vector3 targetDirection = middleFingerMenu.transform.position - headsetTransform.position;
+                middleFingerMenu.transform.rotation = Quaternion.LookRotation(targetDirection);
+                break;
+            }
+        }
+    }
+
+    // helper method to reset color of a texture to a single color
     private void resetColor(Texture2D texture)
     {
         for (int y = 0; y < texture.height; y++)
