@@ -10,6 +10,7 @@ Name:
 UMN Email: 
 
 Third Party Assets:
+	- Oculus Integration Package V34.0 (https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022)
 
 
 ## Getting Started

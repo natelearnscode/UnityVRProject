@@ -5,10 +5,12 @@ using UnityEngine;
 public class HandCollisionScript : MonoBehaviour
 {
     public Material handMaterial;
+    public LineRenderer lineRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -19,7 +21,7 @@ public class HandCollisionScript : MonoBehaviour
         foreach (OVRBone bone in skeleton.Bones)
         {
             // shoot ray for each finger tip
-            if ( bone.Id == OVRSkeleton.BoneId.Hand_Index2)
+            if ( bone.Id == OVRSkeleton.BoneId.Hand_IndexTip)
             {
                 ShootFingerRay(bone);
             }
@@ -29,10 +31,15 @@ public class HandCollisionScript : MonoBehaviour
 
     void ShootFingerRay(OVRBone finger)
     {
+        float rayDistance = 0.1f;
         RaycastHit hit;
         Ray ray = new Ray(finger.Transform.position, finger.Transform.right);
 
-        if (Physics.Raycast(ray, out hit, 0.2f))
+        this.lineRenderer.SetPosition(0, finger.Transform.position);
+        this.lineRenderer.SetPosition(1, finger.Transform.position + (finger.Transform.right  * rayDistance));
+
+        //only paint if raycast hits a paintable object
+        if (Physics.Raycast(ray, out hit, rayDistance) && hit.transform.gameObject.GetComponent<Paintable>())
         {
             // get walls material
             Renderer rend = hit.transform.GetComponent<MeshRenderer>();

@@ -6,6 +6,7 @@ public class HandMenu : MonoBehaviour
 {
     public Transform headsetTransform;
     public GameObject middleFingerMenu;
+    public GameObject settingsMenu;
     public OVRHand.Hand handType;
     public Texture2D wallTexture;
 
@@ -41,6 +42,10 @@ public class HandMenu : MonoBehaviour
                 {
                     resetColor(this.wallTexture);
                 }
+                else
+                {
+                    DisplaySettings();
+                }
             }
         }
         else
@@ -48,6 +53,21 @@ public class HandMenu : MonoBehaviour
             // hand is not facing user
             middleFingerMenu.GetComponent<Canvas>().enabled = false;
         }
+    }
+
+    private void DisplaySettings()
+    {
+        //float distanceInFront = 1.0f;
+        //float distanceBelow = 0.5f;
+        //Vector3 settingsNewPos = headsetTransform.position + (headsetTransform.forward * distanceInFront) - (headsetTransform.up * distanceBelow);
+        //offset is used to put menu at a small distance away from finger. The left and right hands have opposite right vectors, so we need to reverse the direction of the left hand to use the same math
+        Vector3 menuPosOffset = this.handType == OVRHand.Hand.HandLeft ? this.transform.right * 0.5f : -this.transform.right * 0.05f;
+        Vector3 newMenuPos = this.transform.position + menuPosOffset;
+        settingsMenu.transform.position = newMenuPos;
+
+        //rotate menu to face head
+        Vector3 targetDirection = settingsMenu.transform.position - headsetTransform.position;
+        settingsMenu.transform.rotation = Quaternion.LookRotation(targetDirection);
     }
 
     private void DisplayFingerMenus()
