@@ -37,7 +37,7 @@ public class HandMenu : MonoBehaviour
             //  middle finger menu
             if(this.hand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
             {
-                Debug.Log(this.hand.IsDominantHand);
+                //Debug.Log(this.hand.IsDominantHand);
                 if(this.handType == OVRHand.Hand.HandRight)
                 {
                     resetColor(this.wallTexture);
