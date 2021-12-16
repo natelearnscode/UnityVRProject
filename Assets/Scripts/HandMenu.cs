@@ -61,6 +61,10 @@ public class HandMenu : MonoBehaviour
         //float distanceBelow = 0.5f;
         //Vector3 settingsNewPos = headsetTransform.position + (headsetTransform.forward * distanceInFront) - (headsetTransform.up * distanceBelow);
         //offset is used to put menu at a small distance away from finger. The left and right hands have opposite right vectors, so we need to reverse the direction of the left hand to use the same math
+        Canvas settingsMenuCanvas = settingsMenu.GetComponent<Canvas>();
+        if (!settingsMenuCanvas.enabled)
+            settingsMenuCanvas.enabled = true;
+
         Vector3 menuPosOffset = this.handType == OVRHand.Hand.HandLeft ? this.transform.right * 0.5f : -this.transform.right * 0.05f;
         Vector3 newMenuPos = this.transform.position + menuPosOffset;
         settingsMenu.transform.position = newMenuPos;

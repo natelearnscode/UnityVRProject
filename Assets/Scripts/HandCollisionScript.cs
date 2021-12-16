@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +57,61 @@ public class HandCollisionScript : MonoBehaviour
             pixelUV.y *= tex.height;
             //Debug.Log(hit.collider.gameObject.name);
             //Debug.Log($"Collision UV is {pixelUV.x}, {pixelUV.y}");
-            tex.SetPixel((int)pixelUV.x, (int)pixelUV.y, handColor);
+            //tex.SetPixel((int)pixelUV.x, (int)pixelUV.y, handColor);
+            //tex.Apply();
+            DrawCircle(pixelUV.x, pixelUV.y, handColor, tex);
+        }
+
+        void DrawCircle(float x, float y, Color color, Texture2D tex, float r = 5.0f)
+        {
+            double i, angle, x1, y1;
+
+            for (i = 0; i < 360; i += 0.1)
+            {
+                angle = i;
+                x1 = r * Math.Cos(angle * Math.PI / 180);
+                y1 = r * Math.Sin(angle * Math.PI / 180);
+                if (x1 > 0)
+                {
+                    for (float j = x; j < x + x1; j++)
+                    {
+                        if (y1 > 0)
+                        {
+                            for (float k = y; k < y + y1; k++)
+                            {
+                                tex.SetPixel((int)j, (int)k, color);
+                            }
+                        }
+                        else
+                        {
+                            for (float k = y; k > y + y1; k--)
+                            {
+                                tex.SetPixel((int)j, (int)k, color);
+                            }
+                        }
+                    }
+                } 
+                else
+                {
+                    for (float j = x; j > x + x1; j--)
+                    {
+                        if (y1 > 0)
+                        {
+                            for (float k = y; k < y + y1; k++)
+                            {
+                                tex.SetPixel((int)j, (int)k, color);
+                            }
+                        }
+                        else
+                        {
+                            for (float k = y; k > y + y1; k--)
+                            {
+                                tex.SetPixel((int)j, (int)k, color);
+                            }
+                        }
+                    }
+                }
+            }
             tex.Apply();
         }
     }

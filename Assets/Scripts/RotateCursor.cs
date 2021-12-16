@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloseMenuButton : MonoBehaviour
+public class RotateCursor : MonoBehaviour
 {
-    public GameObject settingsMenu; 
+    public Transform menuTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -15,12 +15,7 @@ public class CloseMenuButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void CloseMenu()
-    {
-        settingsMenu.GetComponent<Canvas>().enabled = false;
-        //Debug.Log("button hit");
+        //rotate cursor to face head
+        this.transform.rotation = menuTransform.rotation;
     }
 }
