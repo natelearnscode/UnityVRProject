@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class HandTrackingUI : MonoBehaviour
 {
+    /*
+     * This script is used to set the input module ray transform to the hand's pointer pose for handtracked UI input
+     */
     public OVRHand hand;
     public OVRInputModule inputModule;
 

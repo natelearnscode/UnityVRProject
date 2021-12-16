@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class SetPointerToFinger : MonoBehaviour
 {
+    /*
+     * This script is used to set the ray transform of the input module to a finger for UI input.
+     * 
+     */
     public GameObject hand;
     public OVRGazePointer gazePointer;
     // Start is called before the first frame update

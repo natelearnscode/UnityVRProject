@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Paintable : MonoBehaviour
 {
+    /*
+     * This script is used to tell if an object is paintable
+     */
     // Start is called before the first frame update
     void Start()
     {

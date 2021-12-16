@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CloseMenuButton : MonoBehaviour
 {
+    /*
+     * 
+     * Script to close the settings menu
+     * 
+     */
     public GameObject settingsMenu; 
 
     // Start is called before the first frame update
@@ -21,6 +26,5 @@ public class CloseMenuButton : MonoBehaviour
     public void CloseMenu()
     {
         settingsMenu.GetComponent<Canvas>().enabled = false;
-        //Debug.Log("button hit");
     }
 }

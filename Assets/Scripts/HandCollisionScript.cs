@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class HandCollisionScript : MonoBehaviour
 {
+    /*
+     * 
+     * This script handles the collision between fingers on the hand and the wall
+     * 
+     */
+
     public Material handMaterial;
     public LineRenderer lineRenderer;
 
@@ -21,7 +27,7 @@ public class HandCollisionScript : MonoBehaviour
         // loop through skeleton of bones to find specific bone
         foreach (OVRBone bone in skeleton.Bones)
         {
-            // shoot ray for each finger tip
+            // shoot ray from finger tip
             if ( bone.Id == OVRSkeleton.BoneId.Hand_IndexTip)
             {
                 ShootFingerRay(bone);
@@ -30,6 +36,7 @@ public class HandCollisionScript : MonoBehaviour
         }
     }
 
+    //This method is used to shoot a ray from the finger to the wall and draw on it
     void ShootFingerRay(OVRBone finger)
     {
         float rayDistance = 0.1f;
@@ -55,13 +62,10 @@ public class HandCollisionScript : MonoBehaviour
             Vector2 pixelUV = hit.textureCoord;
             pixelUV.x *= tex.width;
             pixelUV.y *= tex.height;
-            //Debug.Log(hit.collider.gameObject.name);
-            //Debug.Log($"Collision UV is {pixelUV.x}, {pixelUV.y}");
-            //tex.SetPixel((int)pixelUV.x, (int)pixelUV.y, handColor);
-            //tex.Apply();
             DrawCircle(pixelUV.x, pixelUV.y, handColor, tex);
         }
 
+        //helper method used to draw a cirle on the texture so we aren't just changing one pixel's color
         void DrawCircle(float x, float y, Color color, Texture2D tex, float r = 5.0f)
         {
             double i, angle, x1, y1;

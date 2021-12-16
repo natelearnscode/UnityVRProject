@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class HandMenu : MonoBehaviour
 {
+    /*
+     * This script handles the finger menus on the hands. It also is in charge of display each menu if a finger is pinched.
+     * 
+     * 
+     */
     public Transform headsetTransform;
     public GameObject middleFingerMenu;
     public GameObject settingsMenu;
@@ -55,11 +60,9 @@ public class HandMenu : MonoBehaviour
         }
     }
 
+    // This method is used to display the settings menu
     private void DisplaySettings()
     {
-        //float distanceInFront = 1.0f;
-        //float distanceBelow = 0.5f;
-        //Vector3 settingsNewPos = headsetTransform.position + (headsetTransform.forward * distanceInFront) - (headsetTransform.up * distanceBelow);
         //offset is used to put menu at a small distance away from finger. The left and right hands have opposite right vectors, so we need to reverse the direction of the left hand to use the same math
         Canvas settingsMenuCanvas = settingsMenu.GetComponent<Canvas>();
         if (!settingsMenuCanvas.enabled)
@@ -74,6 +77,7 @@ public class HandMenu : MonoBehaviour
         settingsMenu.transform.rotation = Quaternion.LookRotation(targetDirection);
     }
 
+    // This method is used to display the menus above the finger
     private void DisplayFingerMenus()
     {
         // loop through skeleton of bones to find specific bone and display menu

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RotateCursor : MonoBehaviour
 {
+    /*
+     * This script is used to rotate the cursor on the UI to face the headset of the user.
+     */
     public Transform menuTransform;
 
     // Start is called before the first frame update
